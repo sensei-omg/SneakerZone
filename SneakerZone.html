@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SneakerZone — Премиальные кроссовки от мировых брендов</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F4F2ED;
+    --bg-alt:#EBE8E0;
+    --ink:#0A0A0A;
+    --ink-soft:#1A1A1A;
+    --muted:#6B6B6B;
+    --line:#D9D5CC;
+    --accent:#D4FF3A;
+    --accent-ink:#0A0A0A;
+    --white:#FFFFFF;
+    --radius:20px;
+    --radius-sm:12px;
+    --shadow:0 20px 60px -20px rgba(0,0,0,.25);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.5;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:-.02em;line-height:1.05}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  .container{max-width:1400px;margin:0 auto;padding:0 32px}
+
+  /* ===== HEADER ===== */
+  .header{
+    position:sticky;top:0;z-index:100;
+    background:rgba(244,242,237,.85);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 0;
+  }
+  .logo{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:24px;font-weight:700;letter-spacing:-.03em;
+    display:flex;align-items:center;gap:8px;
+  }
+  .logo-dot{
+    width:10px;height:10px;border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 0 4px rgba(212,255,58,.3);
+  }
+  .nav-links{
+    display:flex;gap:36px;list-style:none;
+  }
+  .nav-links a{
+    font-size:15px;font-weight:500;
+    position:relative;transition:color .2s;
+  }
+  .nav-links a::after{
+    content:'';position:absolute;left:0;bottom:-4px;
+    width:0;height:2px;background:var(--ink);
+    transition:width .3s;
+  }
+  .nav-links a:hover::after{width:100%}
+  .nav-actions{display:flex;align-items:center;gap:12px}
+  .icon-btn{
+    width:44px;height:44px;border-radius:50%;
+    background:var(--ink);color:var(--bg);
+    display:flex;align-items:center;justify-content:center;
+    transition:transform .2s, background .2s;
+    position:relative;
+  }
+  .icon-btn:hover{transform:scale(1.05);background:var(--accent);color:var(--ink)}
+  .cart-count{
+    position:absolute;top:-4px;right:-4px;
+    background:var(--accent);color:var(--ink);
+    font-size:11px;font-weight:700;
+    min-width:20px;height:20px;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    padding:0 5px;
+  }
+
+  /* ===== HERO ===== */
+  .hero{
+    padding:80px 0 120px;
+    position:relative;overflow:hidden;
+  }
+  .hero-grid{
+    display:grid;grid-template-columns:1.2fr 1fr;gap:60px;align-items:center;
+  }
+  .hero-tag{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:8px 16px;border-radius:100px;
+    background:var(--ink);color:var(--bg);
+    font-size:13px;font-weight:500;
+    margin-bottom:28px;
+  }
+  .hero-tag .pulse{
+    width:8px;height:8px;border-radius:50%;background:var(--accent);
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{
+    0%,100%{box-shadow:0 0 0 0 rgba(212,255,58,.7)}
+    50%{box-shadow:0 0 0 8px rgba(212,255,58,0)}
+  }
+  .hero h1{
+    font-size:clamp(48px,7vw,104px);
+    margin-bottom:28px;
+  }
+  .hero h1 .italic{
+    font-style:italic;font-weight:400;
+    color:var(--muted);
+  }
+  .hero h1 .accent{
+    background:var(--accent);
+    padding:0 12px;border-radius:12px;
+    display:inline-block;transform:rotate(-2deg);
+  }
+  .hero-text{
+    font-size:18px;color:var(--muted);
+    max-width:480px;margin-bottom:40px;
+  }
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+  .btn{
+    padding:18px 32px;border-radius:100px;
+    font-size:15px;font-weight:600;
+    display:inline-flex;align-items:center;gap:10px;
+    transition:all .25s;
+    border:1.5px solid transparent;
+  }
+  .btn-primary{background:var(--ink);color:var(--bg)}
+  .btn-primary:hover{background:var(--accent);color:var(--ink);transform:translateY(-2px)}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
+  .btn-ghost:hover{background:var(--ink);color:var(--bg)}
+  .btn svg{width:16px;height:16px}
+
+  .hero-visual{
+    position:relative;aspect-ratio:1;
+  }
+  .hero-circle{
+    position:absolute;inset:0;
+    background:var(--ink);
+    border-radius:50%;
+    transform:scale(.9);
+  }
+  .hero-circle::before{
+    content:'';position:absolute;inset:-40px;
+    border:1px dashed var(--line);border-radius:50%;
+    animation:spin 40s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .hero-shoe{
+    position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;
+    font-size:280px;
+    transform:rotate(-15deg);
+    filter:drop-shadow(0 30px 50px rgba(0,0,0,.4));
+    animation:float 6s ease-in-out infinite;
+  }
+  @keyframes float{
+    0%,100%{transform:rotate(-15deg) translateY(0)}
+    50%{transform:rotate(-15deg) translateY(-20px)}
+  }
+  .hero-badge{
+    position:absolute;background:var(--bg);
+    padding:14px 20px;border-radius:16px;
+    box-shadow:var(--shadow);
+    display:flex;align-items:center;gap:12px;
+    font-size:14px;font-weight:600;
+  }
+  .hero-badge-1{top:10%;left:-20px;animation:float 5s ease-in-out infinite}
+  .hero-badge-2{bottom:15%;right:-10px;animation:float 5s ease-in-out infinite .5s}
+  .hero-badge .ico{
+    width:36px;height:36px;border-radius:10px;
+    background:var(--accent);
+    display:flex;align-items:center;justify-content:center;
+    font-size:18px;
+  }
+
+  .hero-stats{
+    display:flex;gap:48px;margin-top:64px;
+    padding-top:40px;border-top:1px solid var(--line);
+  }
+  .stat-num{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:40px;font-weight:600;letter-spacing:-.03em;
+  }
+  .stat-label{font-size:13px;color:var(--muted);margin-top:4px}
+
+  /* ===== MARQUEE ===== */
+  .marquee{
+    background:var(--ink);color:var(--bg);
+    padding:24px 0;overflow:hidden;
+    border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);
+  }
+  .marquee-track{
+    display:flex;gap:60px;white-space:nowrap;
+    animation:scroll 30s linear infinite;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:32px;font-weight:500;letter-spacing:-.02em;
+  }
+  .marquee-track span{display:inline-flex;align-items:center;gap:60px}
+  .marquee-track .dot{color:var(--accent)}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+
+  /* ===== BRANDS ===== */
+  .brands{padding:100px 0 60px}
+  .section-head{
+    display:flex;justify-content:space-between;align-items:flex-end;
+    margin-bottom:48px;gap:40px;flex-wrap:wrap;
+  }
+  .section-title{
+    font-size:clamp(36px,5vw,64px);
+    max-width:700px;
+  }
+  .section-title .italic{font-style:italic;font-weight:400;color:var(--muted)}
+  .section-sub{color:var(--muted);max-width:380px}
+
+  .brands-grid{
+    display:grid;grid-template-columns:repeat(6,1fr);gap:16px;
+  }
+  .brand-card{
+    aspect-ratio:1;
+    background:var(--bg-alt);
+    border-radius:var(--radius);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:22px;font-weight:600;letter-spacing:-.02em;
+    transition:all .3s;
+    cursor:pointer;
+    border:1px solid transparent;
+  }
+  .brand-card:hover{
+    background:var(--ink);color:var(--accent);
+    transform:translateY(-4px);
+  }
+
+  /* ===== CATALOG ===== */
+  .catalog{padding:80px 0 120px}
+  .filters{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:40px;gap:20px;flex-wrap:wrap;
+    padding:20px;background:var(--bg-alt);
+    border-radius:var(--radius);
+  }
+  .filter-tabs{display:flex;gap:8px;flex-wrap:wrap}
+  .filter-tab{
+    padding:10px 20px;border-radius:100px;
+    font-size:14px;font-weight:500;
+    background:transparent;color:var(--ink);
+    transition:all .2s;
+    border:1px solid transparent;
+  }
+  .filter-tab:hover{background:var(--bg)}
+  .filter-tab.active{background:var(--ink);color:var(--bg)}
+  .sort-select{
+    padding:10px 18px;border-radius:100px;
+    background:var(--bg);border:1px solid var(--line);
+    font-size:14px;font-weight:500;font-family:inherit;
+    cursor:pointer;
+  }
+
+  .products{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:24px;
+  }
+  .product{
+    background:var(--bg-alt);
+    border-radius:var(--radius);
+    overflow:hidden;
+    transition:all .35s cubic-bezier(.2,.8,.2,1);
+    position:relative;
+    cursor:pointer;
+  }
+  .product:hover{transform:translateY(-8px);box-shadow:var(--shadow)}
+  .product-img{
+    aspect-ratio:1;
+    background:linear-gradient(135deg,#E8E4DB,#D4CFC3);
+    display:flex;align-items:center;justify-content:center;
+    font-size:120px;
+    position:relative;overflow:hidden;
+    transition:background .3s;
+  }
+  .product:hover .product-img{background:linear-gradient(135deg,#D4FF3A,#B8E62E)}
+  .product-img .shoe{
+    transition:transform .5s cubic-bezier(.2,.8,.2,1);
+    filter:drop-shadow(0 20px 30px rgba(0,0,0,.2));
+  }
+  .product:hover .product-img .shoe{transform:rotate(-15deg) scale(1.1)}
+  .product-tag{
+    position:absolute;top:16px;left:16px;
+    padding:6px 12px;border-radius:100px;
+    background:var(--ink);color:var(--bg);
+    font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
+  }
+  .product-tag.new{background:var(--accent);color:var(--ink)}
+  .product-tag.hot{background:#FF4500;color:#fff}
+  .product-fav{
+    position:absolute;top:16px;right:16px;
+    width:38px;height:38px;border-radius:50%;
+    background:rgba(255,255,255,.9);
+    display:flex;align-items:center;justify-content:center;
+    transition:all .2s;
+    font-size:16px;
+  }
+  .product-fav:hover{background:var(--ink);color:var(--accent)}
+  .product-info{padding:20px}
+  .product-brand{
+    font-size:12px;color:var(--muted);
+    text-transform:uppercase;letter-spacing:.1em;
+    margin-bottom:6px;
+  }
+  .product-name{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:17px;font-weight:600;
+    margin-bottom:14px;
+    letter-spacing:-.01em;
+  }
+  .product-bottom{
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .product-price{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:20px;font-weight:600;
+  }
+  .product-price .old{
+    font-size:13px;color:var(--muted);
+    text-decoration:line-through;margin-left:8px;font-weight:400;
+  }
+  .add-btn{
+    width:40px;height:40px;border-radius:50%;
+    background:var(--ink);color:var(--bg);
+    display:flex;align-items:center;justify-content:center;
+    transition:all .2s;
+  }
+  .add-btn:hover{background:var(--accent);color:var(--ink);transform:rotate(90deg)}
+  .rating{
+    display:flex;align-items:center;gap:4px;
+    font-size:13px;color:var(--muted);
+    margin-bottom:10px;
+  }
+  .rating .stars{color:#FFB800}
+
+  /* ===== FEATURES ===== */
+  .features{
+    padding:120px 0;
+    background:var(--ink);color:var(--bg);
+    border-radius:40px 40px 0 0;
+    margin-top:40px;
+  }
+  .features .section-title{color:var(--bg)}
+  .features .section-title .italic{color:var(--muted)}
+  .features-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);
+    gap:24px;margin-top:60px;
+  }
+  .feature{
+    padding:32px;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:var(--radius);
+    transition:all .3s;
+  }
+  .feature:hover{
+    background:rgba(255,255,255,.04);
+    border-color:var(--accent);
+    transform:translateY(-4px);
+  }
+  .feature-ico{
+    width:56px;height:56px;border-radius:16px;
+    background:var(--accent);color:var(--ink);
+    display:flex;align-items:center;justify-content:center;
+    font-size:26px;margin-bottom:24px;
+  }
+  .feature h3{font-size:22px;margin-bottom:12px}
+  .feature p{color:var(--muted);font-size:15px;line-height:1.6}
+
+  /* ===== CTA ===== */
+  .cta{
+    padding:120px 0;
+    text-align:center;
+  }
+  .cta-box{
+    background:var(--accent);
+    border-radius:40px;
+    padding:80px 40px;
+    position:relative;overflow:hidden;
+  }
+  .cta-box::before{
+    content:'';position:absolute;
+    top:-100px;right:-100px;
+    width:400px;height:400px;
+    background:rgba(0,0,0,.05);border-radius:50%;
+  }
+  .cta-box::after{
+    content:'';position:absolute;
+    bottom:-150px;left:-100px;
+    width:500px;height:500px;
+    background:rgba(0,0,0,.05);border-radius:50%;
+  }
+  .cta-box > *{position:relative;z-index:1}
+  .cta h2{
+    font-size:clamp(40px,6vw,80px);
+    margin-bottom:24px;
+  }
+  .cta p{
+    font-size:18px;color:var(--ink-soft);
+    max-width:500px;margin:0 auto 40px;
+  }
+  .subscribe{
+    display:flex;max-width:500px;margin:0 auto;
+    background:var(--ink);border-radius:100px;
+    padding:6px;gap:6px;
+  }
+  .subscribe input{
+    flex:1;padding:0 24px;
+    background:transparent;border:none;outline:none;
+    color:var(--bg);font-family:inherit;font-size:15px;
+  }
+  .subscribe input::placeholder{color:var(--muted)}
+  .subscribe button{
+    padding:14px 28px;border-radius:100px;
+    background:var(--accent);color:var(--ink);
+    font-weight:600;font-size:14px;
+    transition:transform .2s;
+  }
+  .subscribe button:hover{transform:scale(1.05)}
+
+  /* ===== FOOTER ===== */
+  .footer{
+    background:var(--ink);color:var(--bg);
+    padding:80px 0 40px;
+  }
+  .footer-grid{
+    display:grid;grid-template-columns:2fr 1fr 1fr 1fr;
+    gap:60px;margin-bottom:60px;
+  }
+  .footer-logo{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:32px;font-weight:700;
+    margin-bottom:20px;letter-spacing:-.03em;
+    display:flex;align-items:center;gap:10px;
+  }
+  .footer-desc{color:var(--muted);max-width:340px;margin-bottom:24px}
+  .socials{display:flex;gap:10px}
+  .social{
+    width:44px;height:44px;border-radius:50%;
+    background:rgba(255,255,255,.08);
+    display:flex;align-items:center;justify-content:center;
+    transition:all .2s;font-size:18px;
+  }
+  .social:hover{background:var(--accent);color:var(--ink)}
+  .footer h4{
+    font-size:14px;text-transform:uppercase;letter-spacing:.1em;
+    margin-bottom:24px;color:var(--muted);font-weight:500;
+    font-family:'Inter',sans-serif;
+  }
+  .footer ul{list-style:none;display:flex;flex-direction:column;gap:14px}
+  .footer ul a{
+    font-size:15px;color:var(--bg);
+    transition:color .2s;
+  }
+  .footer ul a:hover{color:var(--accent)}
+  .footer-bottom{
+    padding-top:40px;border-top:1px solid rgba(255,255,255,.1);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;
+    color:var(--muted);font-size:14px;
+  }
+
+  /* ===== CART DRAWER ===== */
+  .cart-overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,.5);
+    backdrop-filter:blur(4px);
+    opacity:0;pointer-events:none;
+    transition:opacity .3s;z-index:200;
+  }
+  .cart-overlay.open{opacity:1;pointer-events:auto}
+  .cart-drawer{
+    position:fixed;top:0;right:0;bottom:0;
+    width:min(440px,100%);
+    background:var(--bg);
+    transform:translateX(100%);
+    transition:transform .4s cubic-bezier(.2,.8,.2,1);
+    z-index:201;
+    display:flex;flex-direction:column;
+  }
+  .cart-drawer.open{transform:translateX(0)}
+  .cart-head{
+    padding:28px;display:flex;justify-content:space-between;align-items:center;
+    border-bottom:1px solid var(--line);
+  }
+  .cart-head h3{font-size:24px}
+  .cart-close{
+    width:40px;height:40px;border-radius:50%;
+    background:var(--bg-alt);
+    display:flex;align-items:center;justify-content:center;
+    font-size:20px;transition:transform .2s;
+  }
+  .cart-close:hover{transform:rotate(90deg)}
+  .cart-items{flex:1;overflow-y:auto;padding:20px 28px}
+  .cart-empty{
+    text-align:center;padding:60px 20px;color:var(--muted);
+  }
+  .cart-empty .ico{font-size:60px;margin-bottom:20px;opacity:.3}
+  .cart-item{
+    display:flex;gap:16px;padding:16px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .cart-item-img{
+    width:80px;height:80px;border-radius:12px;
+    background:var(--bg-alt);
+    display:flex;align-items:center;justify-content:center;
+    font-size:40px;flex-shrink:0;
+  }
+  .cart-item-info{flex:1}
+  .cart-item-brand{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+  .cart-item-name{font-weight:600;font-size:15px;margin:4px 0 8px}
+  .cart-item-price{font-family:'Space Grotesk',sans-serif;font-weight:600}
+  .cart-item-remove{
+    color:var(--muted);font-size:13px;margin-top:8px;
+    transition:color .2s;
+  }
+  .cart-item-remove:hover{color:#FF4500}
+  .cart-foot{
+    padding:28px;border-top:1px solid var(--line);
+    background:var(--bg-alt);
+  }
+  .cart-total{
+    display:flex;justify-content:space-between;
+    margin-bottom:20px;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:22px;font-weight:600;
+  }
+  .cart-checkout{
+    width:100%;padding:18px;border-radius:100px;
+    background:var(--ink);color:var(--bg);
+    font-weight:600;font-size:15px;
+    transition:background .2s;
+  }
+  .cart-checkout:hover{background:var(--accent);color:var(--ink)}
+  .cart-clear{
+    width:100%;padding:12px;margin-top:10px;
+    color:var(--muted);font-size:13px;
+    transition:color .2s;
+  }
+  .cart-clear:hover{color:var(--ink)}
+
+  /* ===== TOAST ===== */
+  .toast{
+    position:fixed;bottom:30px;left:50%;
+    transform:translateX(-50%) translateY(100px);
+    background:var(--ink);color:var(--bg);
+    padding:14px 24px;border-radius:100px;
+    font-size:14px;font-weight:500;
+    box-shadow:var(--shadow);
+    opacity:0;transition:all .3s;
+    z-index:300;
+    display:flex;align-items:center;gap:10px;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .toast .ico{color:var(--accent)}
+
+  /* ===== ANIMATIONS ===== */
+  .reveal{opacity:0;transform:translateY(30px);transition:all .8s cubic-bezier(.2,.8,.2,1)}
+  .reveal.visible{opacity:1;transform:translateY(0)}
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width:1100px){
+    .products{grid-template-columns:repeat(3,1fr)}
+    .features-grid{grid-template-columns:repeat(2,1fr)}
+    .brands-grid{grid-template-columns:repeat(3,1fr)}
+    .footer-grid{grid-template-columns:1fr 1fr;gap:40px}
+  }
+  @media (max-width:768px){
+    .container{padding:0 20px}
+    .nav-links{display:none}
+    .hero{padding:40px 0 80px}
+    .hero-grid{grid-template-columns:1fr;gap:40px}
+    .hero-visual{max-width:400px;margin:0 auto}
+    .hero-stats{gap:24px;flex-wrap:wrap}
+    .products{grid-template-columns:repeat(2,1fr);gap:14px}
+    .product-img{font-size:80px}
+    .product-info{padding:14px}
+    .product-name{font-size:15px}
+    .product-price{font-size:17px}
+    .features-grid{grid-template-columns:1fr}
+    .footer-grid{grid-template-columns:1fr}
+    .marquee-track{font-size:22px;gap:40px}
+    .marquee-track span{gap:40px}
+    .cta-box{padding:60px 24px;border-radius:24px}
+    .subscribe{flex-direction:column;border-radius:24px;padding:10px}
+    .subscribe input{padding:14px}
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="container">
+    <nav class="nav">
+      <a href="#" class="logo"><span class="logo-dot"></span>SneakerZone</a>
+      <ul class="nav-links">
+        <li><a href="#catalog">Каталог</a></li>
+        <li><a href="#brands">Бренды</a></li>
+        <li><a href="#new">Новинки</a></li>
+        <li><a href="#features">О нас</a></li>
+        <li><a href="#contacts">Контакты</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="icon-btn" aria-label="Поиск">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </button>
+        <button class="icon-btn" aria-label="Избранное">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/></svg>
+        </button>
+        <button class="icon-btn" id="cartBtn" aria-label="Корзина">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-content reveal">
+        <div class="hero-tag"><span class="pulse"></span>Новая коллекция SS'26</div>
+        <h1>Кроссовки, <br>которые <span class="italic">задают</span> <span class="accent">стиль</span></h1>
+        <p class="hero-text">Оригинальные модели от Nike, Adidas, New Balance и Puma. Только подлинные вещи с гарантией и доставкой по всей России за 1–3 дня.</p>
+        <div class="hero-cta">
+          <a href="#catalog" class="btn btn-primary">Смотреть каталог
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#new" class="btn btn-ghost">Новинки сезона</a>
+        </div>
+        <div class="hero-stats">
+          <div><div class="stat-num">12K+</div><div class="stat-label">Довольных клиентов</div></div>
+          <div><div class="stat-num">500+</div><div class="stat-label">Моделей в наличии</div></div>
+          <div><div class="stat-num">24/7</div><div class="stat-label">Поддержка</div></div>
+        </div>
+      </div>
+      <div class="hero-visual reveal">
+        <div class="hero-circle"></div>
+        <div class="hero-shoe">👟</div>
+        <div class="hero-badge hero-badge-1">
+          <div class="ico">🚀</div>
+          <div>Доставка<br><span style="color:var(--muted);font-weight:400">за 24 часа</span></div>
+        </div>
+        <div class="hero-badge hero-badge-2">
+          <div class="ico">✓</div>
+          <div>100% оригинал<br><span style="color:var(--muted);font-weight:400">сертификат</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span>NIKE <span class="dot">●</span> ADIDAS <span class="dot">●</span> NEW BALANCE <span class="dot">●</span> PUMA <span class="dot">●</span> JORDAN <span class="dot">●</span> ASICS <span class="dot">●</span> CONVERSE <span class="dot">●</span> VANS <span class="dot">●</span></span>
+    <span>NIKE <span class="dot">●</span> ADIDAS <span class="dot">●</span> NEW BALANCE <span class="dot">●</span> PUMA <span class="dot">●</span> JORDAN <span class="dot">●</span> ASICS <span class="dot">●</span> CONVERSE <span class="dot">●</span> VANS <span class="dot">●</span></span>
+  </div>
+</div>
+
+<!-- BRANDS -->
+<section class="brands" id="brands">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2 class="section-title">Мировые <span class="italic">бренды</span> в одном месте</h2>
+      <p class="section-sub">Мы работаем напрямую с официальными дистрибьюторами — никаких подделок и серых поставок.</p>
+    </div>
+    <div class="brands-grid">
+      <div class="brand-card reveal">NIKE</div>
+      <div class="brand-card reveal">ADIDAS</div>
+      <div class="brand-card reveal">JORDAN</div>
+      <div class="brand-card reveal">NEW BALANCE</div>
+      <div class="brand-card reveal">PUMA</div>
+      <div class="brand-card reveal">ASICS</div>
+    </div>
+  </div>
+</section>
+
+<!-- CATALOG -->
+<section class="catalog" id="catalog">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2 class="section-title">Каталог <span class="italic">кроссовок</span></h2>
+      <p class="section-sub">Более 500 моделей на любой вкус — от классики до лимитированных релизов.</p>
+    </div>
+
+    <div class="filters reveal">
+      <div class="filter-tabs" id="filterTabs">
+        <button class="filter-tab active" data-filter="all">Все</button>
+        <button class="filter-tab" data-filter="Nike">Nike</button>
+        <button class="filter-tab" data-filter="Adidas">Adidas</button>
+        <button class="filter-tab" data-filter="New Balance">New Balance</button>
+        <button class="filter-tab" data-filter="Puma">Puma</button>
+        <button class="filter-tab" data-filter="Jordan">Jordan</button>
+        <button class="filter-tab" data-filter="Asics">Asics</button>
+      </div>
+      <select class="sort-select" id="sortSelect">
+        <option value="default">По умолчанию</option>
+        <option value="price-asc">По цене ↑</option>
+        <option value="price-desc">По цене ↓</option>
+        <option value="rating">По рейтингу</option>
+      </select>
+    </div>
+
+    <div class="products" id="productsGrid"></div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2 class="section-title">Почему <span class="italic">выбирают</span> нас</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature reveal">
+        <div class="feature-ico">🚚</div>
+        <h3>Быстрая доставка</h3>
+        <p>1–3 дня по Москве, 3–7 дней по России. Бесплатно от 10 000 ₽.</p>
+      </div>
+      <div class="feature reveal">
+        <div class="feature-ico">✓</div>
+        <h3>100% оригинал</h3>
+        <p>Каждая пара проходит проверку подлинности. Сертификат в комплекте.</p>
+      </div>
+      <div class="feature reveal">
+        <div class="feature-ico">↺</div>
+        <h3>Возврат 14 дней</h3>
+        <p>Не подошёл размер или модель? Вернём деньги без вопросов.</p>
+      </div>
+      <div class="feature reveal">
+        <div class="feature-ico">💬</div>
+        <h3>Поддержка 24/7</h3>
+        <p>Ответим на любой вопрос в мессенджерах, по телефону или почте.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container">
+    <div class="cta-box reveal">
+      <h2>Подпишись на <em style="font-style:italic;font-weight:400">дропы</em></h2>
+      <p>Первым узнавай о лимитированных релизах, закрытых распродажах и эксклюзивных моделях.</p>
+      <form class="subscribe" onsubmit="event.preventDefault();showToast('Вы подписаны на рассылку ✓')">
+        <input type="email" placeholder="your@email.com" required>
+        <button type="submit">Подписаться</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer" id="contacts">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo"><span class="logo-dot"></span>SneakerZone</div>
+        <p class="footer-desc">Интернет-магазин кроссовок с душой. Только оригинальные модели от мировых брендов с доставкой по всей России.</p>
+        <div class="socials">
+          <a href="#" class="social" aria-label="Telegram">✈</a>
+          <a href="#" class="social" aria-label="VK">VK</a>
+          <a href="#" class="social" aria-label="Instagram">◎</a>
+          <a href="#" class="social" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div>
+        <h4>Каталог</h4>
+        <ul>
+          <li><a href="#">Кроссовки</a></li>
+          <li><a href="#">Кеды</a></li>
+          <li><a href="#">Сникерсы</a></li>
+          <li><a href="#">Аксессуары</a></li>
+          <li><a href="#">Новинки</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Покупателям</h4>
+        <ul>
+          <li><a href="#">Доставка</a></li>
+          <li><a href="#">Оплата</a></li>
+          <li><a href="#">Возврат</a></li>
+          <li><a href="#">Гарантия</a></li>
+          <li><a href="#">Оптовые заказы</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Контакты</h4>
+        <ul>
+          <li>📍 Москва, ул. Тверская, 15</li>
+          <li>📞 +7 (999) 123-45-67</li>
+          <li>✉️ info@sneakerzone.ru</li>
+          <li>🕐 Пн–Вс: 10:00 – 22:00</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 SneakerZone. Все права защищены</div>
+      <div><a href="#">Политика конфиденциальности</a> · <a href="#">Оферта</a></div>
+    </div>
+  </div>
+</footer>
+
+<!-- CART -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-drawer" id="cartDrawer">
+  <div class="cart-head">
+    <h3>Корзина</h3>
+    <button class="cart-close" id="cartClose">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-foot" id="cartFoot" style="display:none">
+    <div class="cart-total">
+      <span>Итого</span>
+      <span id="cartTotal">0 ₽</span>
+    </div>
+    <button class="cart-checkout" onclick="showToast('Заказ оформлен! Мы свяжемся с вами ✓')">Оформить заказ</button>
+    <button class="cart-clear" id="cartClear">Очистить корзину</button>
+  </div>
+</aside>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span class="ico">✓</span><span id="toastText">Добавлено в корзину</span></div>
+
+<script>
+  // === PRODUCTS DATA ===
+  const products = [
+    {id:1,brand:'Nike',name:'Air Force 1 \'07',price:12990,oldPrice:14990,rating:4.9,emoji:'👟',tag:'hot'},
+    {id:2,brand:'Nike',name:'Air Max 90',price:14490,rating:4.8,emoji:'👟',tag:'new'},
+    {id:3,brand:'Nike',name:'Dunk Low Retro',price:13990,rating:4.9,emoji:'👟'},
+    {id:4,brand:'Jordan',name:'Air Jordan 1 Mid',price:16990,rating:5.0,emoji:'👟',tag:'hot'},
+    {id:5,brand:'Adidas',name:'Yeezy Boost 350 V2',price:28990,oldPrice:32990,rating:4.9,emoji:'👟'},
+    {id:6,brand:'Adidas',name:'Samba OG',price:11990,rating:4.8,emoji:'👟',tag:'new'},
+    {id:7,brand:'Adidas',name:'Gazelle Bold',price:10990,rating:4.7,emoji:'👟'},
+    {id:8,brand:'Adidas',name:'Ultraboost Light',price:18990,rating:4.9,emoji:'👟'},
+    {id:9,brand:'New Balance',name:'550 White Green',price:15490,rating:4.9,emoji:'👟',tag:'hot'},
+    {id:10,brand:'New Balance',name:'2002R Protection',price:17990,rating:4.8,emoji:'👟'},
+    {id:11,brand:'New Balance',name:'990v6 Made in USA',price:29990,rating:5.0,emoji:'👟',tag:'new'},
+    {id:12,brand:'New Balance',name:'530 Silver',price:12490,rating:4.7,emoji:'👟'},
+    {id:13,brand:'Puma',name:'Suede Classic XXI',price:7990,oldPrice:9990,rating:4.6,emoji:'👟'},
+    {id:14,brand:'Puma',name:'RS-X Reinvention',price:11490,rating:4.7,emoji:'👟'},
+    {id:15,brand:'Puma',name:'Palermo',price:9990,rating:4.8,emoji:'👟',tag:'new'},
+    {id:16,brand:'Asics',name:'Gel-1130 White',price:13490,rating:4.8,emoji:'👟'},
+    {id:17,brand:'Asics',name:'Gel-Kayano 14',price:16990,rating:4.9,emoji:'👟',tag:'hot'},
+    {id:18,brand:'Jordan',name:'Air Jordan 4 Retro',price:22990,rating:5.0,emoji:'👟'},
+    {id:19,brand:'Nike',name:'V2K Run',price:13490,rating:4.7,emoji:'👟'},
+    {id:20,brand:'Adidas',name:'Campus 00s',price:10490,rating:4.8,emoji:'👟',tag:'new'},
+  ];
+
+  // === STATE ===
+  let currentFilter = 'all';
+  let currentSort = 'default';
+  let cart = [];
+
+  // === RENDER PRODUCTS ===
+  const grid = document.getElementById('productsGrid');
+  function renderProducts(){
+    let list = currentFilter === 'all' ? [...products] : products.filter(p=>p.brand===currentFilter);
+    if(currentSort==='price-asc') list.sort((a,b)=>a.price-b.price);
+    else if(currentSort==='price-desc') list.sort((a,b)=>b.price-a.price);
+    else if(currentSort==='rating') list.sort((a,b)=>b.rating-a.rating);
+
+    grid.innerHTML = list.map(p=>`
+      <article class="product reveal visible" data-id="${p.id}">
+        <div class="product-img">
+          ${p.tag?`<span class="product-tag ${p.tag}">${p.tag==='new'?'New':'Hot'}</span>`:''}
+          <button class="product-fav" aria-label="В избранное">♡</button>
+          <span class="shoe">${p.emoji}</span>
+        </div>
+        <div class="product-info">
+          <div class="product-brand">${p.brand}</div>
+          <div class="product-name">${p.name}</div>
+          <div class="rating">
+            <span class="stars">★★★★★</span>
+            <span>${p.rating}</span>
+          </div>
+          <div class="product-bottom">
+            <div class="product-price">
+              ${p.price.toLocaleString('ru-RU')} ₽
+              ${p.oldPrice?`<span class="old">${p.oldPrice.toLocaleString('ru-RU')} ₽</span>`:''}
+            </div>
+            <button class="add-btn" onclick="addToCart(${p.id})" aria-label="В корзину">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+          </div>
+        </div>
+      </article>
+    `).join('');
+  }
+
+  // === FILTERS ===
+  document.getElementById('filterTabs').addEventListener('click',e=>{
+    if(!e.target.matches('.filter-tab')) return;
+    document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
+    e.target.classList.add('active');
+    currentFilter = e.target.dataset.filter;
+    renderProducts();
+  });
+  document.getElementById('sortSelect').addEventListener('change',e=>{
+    currentSort = e.target.value;
+    renderProducts();
+  });
+
+  // === CART ===
+  const cartBtn = document.getElementById('cartBtn');
+  const cartDrawer = document.getElementById('cartDrawer');
+  const cartOverlay = document.getElementById('cartOverlay');
+  const cartClose = document.getElementById('cartClose');
+  const cartItems = document.getElementById('cartItems');
+  const cartCount = document.getElementById('cartCount');
+  const cartTotal = document.getElementById('cartTotal');
+  const cartFoot = document.getElementById('cartFoot');
+  const cartClear = document.getElementById('cartClear');
+
+  function openCart(){cartDrawer.classList.add('open');cartOverlay.classList.add('open')}
+  function closeCart(){cartDrawer.classList.remove('open');cartOverlay.classList.remove('open')}
+  cartBtn.addEventListener('click',openCart);
+  cartClose.addEventListener('click',closeCart);
+  cartOverlay.addEventListener('click',closeCart);
+
+  function addToCart(id){
+    const product = products.find(p=>p.id===id);
+    const existing = cart.find(i=>i.id===id);
+    if(existing) existing.qty++;
+    else cart.push({...product,qty:1});
+    updateCart();
+    showToast(`${product.name} добавлен в корзину`);
+  }
+  function removeFromCart(id){
+    cart = cart.filter(i=>i.id!==id);
+    updateCart();
+  }
+  function updateCart(){
+    const count = cart.reduce((s,i)=>s+i.qty,0);
+    const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+    cartCount.textContent = count;
+    cartTotal.textContent = total.toLocaleString('ru-RU')+' ₽';
+    cartFoot.style.display = cart.length?'block':'none';
+    if(!cart.length){
+      cartItems.innerHTML = `<div class="cart-empty"><div class="ico">🛒</div><div>Корзина пуста</div></div>`;
+    } else {
+      cartItems.innerHTML = cart.map(i=>`
+        <div class="cart-item">
+          <div class="cart-item-img">${i.emoji}</div>
+          <div class="cart-item-info">
+            <div class="cart-item-brand">${i.brand}</div>
+            <div class="cart-item-name">${i.name}</div>
+            <div class="cart-item-price">${(i.price*i.qty).toLocaleString('ru-RU')} ₽ · ${i.qty} шт.</div>
+            <button class="cart-item-remove" onclick="removeFromCart(${i.id})">Удалить</button>
+          </div>
+        </div>
+      `).join('');
+    }
+  }
+  cartClear.addEventListener('click',()=>{cart=[];updateCart()});
+
+  // === TOAST ===
+  const toast = document.getElementById('toast');
+  const toastText = document.getElementById('toastText');
+  let toastTimer;
+  function showToast(msg){
+    toastText.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(()=>toast.classList.remove('show'),2500);
+  }
+
+  // === REVEAL ON SCROLL ===
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}
+    });
+  },{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // === INIT ===
+  renderProducts();
+  updateCart();
+</script>
+</body>
+</html>
