@@ -82,13 +82,20 @@
     position:relative;
   }
   .icon-btn:hover{transform:scale(1.05);background:var(--accent);color:var(--ink)}
-  .cart-count{
+  .icon-count{
     position:absolute;top:-4px;right:-4px;
     background:var(--accent);color:var(--ink);
     font-size:11px;font-weight:700;
     min-width:20px;height:20px;border-radius:10px;
     display:flex;align-items:center;justify-content:center;
     padding:0 5px;
+    transform:scale(0);transition:transform .25s cubic-bezier(.2,.8,.2,1);
+  }
+  .icon-count.show{transform:scale(1)}
+  .icon-count.bump{animation:bump .4s}
+  @keyframes bump{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.3)}
   }
 
   /* ===== HERO ===== */
@@ -118,10 +125,7 @@
     font-size:clamp(48px,7vw,104px);
     margin-bottom:28px;
   }
-  .hero h1 .italic{
-    font-style:italic;font-weight:400;
-    color:var(--muted);
-  }
+  .hero h1 .italic{font-style:italic;font-weight:400;color:var(--muted)}
   .hero h1 .accent{
     background:var(--accent);
     padding:0 12px;border-radius:12px;
@@ -312,10 +316,18 @@
     width:38px;height:38px;border-radius:50%;
     background:rgba(255,255,255,.9);
     display:flex;align-items:center;justify-content:center;
-    transition:all .2s;
+    transition:all .25s;
     font-size:16px;
+    z-index:2;
   }
-  .product-fav:hover{background:var(--ink);color:var(--accent)}
+  .product-fav:hover{background:var(--ink);color:var(--accent);transform:scale(1.1)}
+  .product-fav.active{background:var(--ink);color:#FF4500}
+  .product-fav.active:hover{color:var(--accent)}
+  .product-fav.pop{animation:pop .4s}
+  @keyframes pop{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.3)}
+  }
   .product-info{padding:20px}
   .product-brand{
     font-size:12px;color:var(--muted);
@@ -478,83 +490,203 @@
     color:var(--muted);font-size:14px;
   }
 
-  /* ===== CART DRAWER ===== */
-  .cart-overlay{
+  /* ===== DRAWERS (Search / Favorites / Cart) ===== */
+  .overlay{
     position:fixed;inset:0;background:rgba(0,0,0,.5);
     backdrop-filter:blur(4px);
     opacity:0;pointer-events:none;
     transition:opacity .3s;z-index:200;
   }
-  .cart-overlay.open{opacity:1;pointer-events:auto}
-  .cart-drawer{
+  .overlay.open{opacity:1;pointer-events:auto}
+  .drawer{
     position:fixed;top:0;right:0;bottom:0;
-    width:min(440px,100%);
+    width:min(460px,100%);
     background:var(--bg);
     transform:translateX(100%);
     transition:transform .4s cubic-bezier(.2,.8,.2,1);
     z-index:201;
     display:flex;flex-direction:column;
   }
-  .cart-drawer.open{transform:translateX(0)}
-  .cart-head{
+  .drawer.open{transform:translateX(0)}
+  .drawer-head{
     padding:28px;display:flex;justify-content:space-between;align-items:center;
     border-bottom:1px solid var(--line);
+    gap:16px;
   }
-  .cart-head h3{font-size:24px}
-  .cart-close{
+  .drawer-head h3{font-size:24px}
+  .drawer-close{
     width:40px;height:40px;border-radius:50%;
     background:var(--bg-alt);
     display:flex;align-items:center;justify-content:center;
     font-size:20px;transition:transform .2s;
+    flex-shrink:0;
   }
-  .cart-close:hover{transform:rotate(90deg)}
-  .cart-items{flex:1;overflow-y:auto;padding:20px 28px}
-  .cart-empty{
+  .drawer-close:hover{transform:rotate(90deg)}
+  .drawer-body{flex:1;overflow-y:auto;padding:20px 28px}
+  .drawer-empty{
     text-align:center;padding:60px 20px;color:var(--muted);
   }
-  .cart-empty .ico{font-size:60px;margin-bottom:20px;opacity:.3}
-  .cart-item{
-    display:flex;gap:16px;padding:16px 0;
-    border-bottom:1px solid var(--line);
+  .drawer-empty .ico{font-size:60px;margin-bottom:20px;opacity:.3}
+
+  /* ===== SEARCH DRAWER ===== */
+  .search-input-wrap{
+    position:relative;margin-bottom:20px;
   }
-  .cart-item-img{
-    width:80px;height:80px;border-radius:12px;
+  .search-input{
+    width:100%;padding:16px 20px 16px 52px;
     background:var(--bg-alt);
-    display:flex;align-items:center;justify-content:center;
-    font-size:40px;flex-shrink:0;
+    border:1.5px solid transparent;
+    border-radius:16px;
+    font-family:inherit;font-size:15px;
+    color:var(--ink);outline:none;
+    transition:border-color .2s, background .2s;
   }
-  .cart-item-info{flex:1}
-  .cart-item-brand{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
-  .cart-item-name{font-weight:600;font-size:15px;margin:4px 0 8px}
-  .cart-item-price{font-family:'Space Grotesk',sans-serif;font-weight:600}
-  .cart-item-remove{
-    color:var(--muted);font-size:13px;margin-top:8px;
+  .search-input:focus{
+    border-color:var(--ink);background:var(--bg);
+  }
+  .search-input::placeholder{color:var(--muted)}
+  .search-input-ico{
+    position:absolute;left:18px;top:50%;transform:translateY(-50%);
+    color:var(--muted);pointer-events:none;
+  }
+  .search-clear{
+    position:absolute;right:10px;top:50%;transform:translateY(-50%);
+    width:32px;height:32px;border-radius:50%;
+    background:var(--bg);color:var(--muted);
+    display:none;align-items:center;justify-content:center;
     transition:color .2s;
   }
-  .cart-item-remove:hover{color:#FF4500}
-  .cart-foot{
+  .search-clear.show{display:flex}
+  .search-clear:hover{color:var(--ink)}
+
+  .search-hint{
+    font-size:13px;color:var(--muted);
+    margin-bottom:16px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .search-hint strong{color:var(--ink)}
+
+  .search-results{
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .search-item{
+    display:flex;gap:14px;padding:12px;
+    background:var(--bg-alt);
+    border-radius:14px;
+    cursor:pointer;
+    transition:all .2s;
+    align-items:center;
+  }
+  .search-item:hover{
+    background:var(--ink);color:var(--bg);
+    transform:translateX(4px);
+  }
+  .search-item:hover .search-item-brand{color:rgba(244,242,237,.6)}
+  .search-item:hover .search-item-price{color:var(--accent)}
+  .search-item-img{
+    width:60px;height:60px;border-radius:12px;
+    background:var(--bg);
+    display:flex;align-items:center;justify-content:center;
+    font-size:32px;flex-shrink:0;
+  }
+  .search-item-info{flex:1;min-width:0}
+  .search-item-brand{
+    font-size:11px;color:var(--muted);
+    text-transform:uppercase;letter-spacing:.1em;
+  }
+  .search-item-name{
+    font-weight:600;font-size:14px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    margin:2px 0 4px;
+  }
+  .search-item-price{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:600;font-size:14px;
+    transition:color .2s;
+  }
+  .search-item-add{
+    width:36px;height:36px;border-radius:50%;
+    background:var(--bg);color:var(--ink);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+    transition:all .2s;
+  }
+  .search-item:hover .search-item-add{
+    background:var(--accent);color:var(--ink);
+  }
+
+  .search-popular{
+    margin-top:24px;padding-top:24px;
+    border-top:1px solid var(--line);
+  }
+  .search-popular h4{
+    font-size:12px;text-transform:uppercase;letter-spacing:.1em;
+    color:var(--muted);margin-bottom:14px;font-weight:500;
+    font-family:'Inter',sans-serif;
+  }
+  .popular-tags{display:flex;flex-wrap:wrap;gap:8px}
+  .popular-tag{
+    padding:8px 14px;border-radius:100px;
+    background:var(--bg-alt);
+    font-size:13px;font-weight:500;
+    transition:all .2s;
+  }
+  .popular-tag:hover{background:var(--ink);color:var(--accent)}
+
+  /* ===== CART / FAVS ===== */
+  .drawer-foot{
     padding:28px;border-top:1px solid var(--line);
     background:var(--bg-alt);
   }
-  .cart-total{
+  .drawer-total{
     display:flex;justify-content:space-between;
     margin-bottom:20px;
     font-family:'Space Grotesk',sans-serif;
     font-size:22px;font-weight:600;
   }
-  .cart-checkout{
+  .drawer-action{
     width:100%;padding:18px;border-radius:100px;
     background:var(--ink);color:var(--bg);
     font-weight:600;font-size:15px;
     transition:background .2s;
   }
-  .cart-checkout:hover{background:var(--accent);color:var(--ink)}
-  .cart-clear{
+  .drawer-action:hover{background:var(--accent);color:var(--ink)}
+  .drawer-clear{
     width:100%;padding:12px;margin-top:10px;
     color:var(--muted);font-size:13px;
     transition:color .2s;
   }
-  .cart-clear:hover{color:var(--ink)}
+  .drawer-clear:hover{color:var(--ink)}
+
+  .list-item{
+    display:flex;gap:16px;padding:16px 0;
+    border-bottom:1px solid var(--line);
+    align-items:center;
+  }
+  .list-item-img{
+    width:80px;height:80px;border-radius:12px;
+    background:var(--bg-alt);
+    display:flex;align-items:center;justify-content:center;
+    font-size:40px;flex-shrink:0;
+  }
+  .list-item-info{flex:1;min-width:0}
+  .list-item-brand{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+  .list-item-name{font-weight:600;font-size:15px;margin:4px 0 8px}
+  .list-item-price{font-family:'Space Grotesk',sans-serif;font-weight:600}
+  .list-item-qty{font-size:13px;color:var(--muted);margin-top:4px}
+  .list-item-remove{
+    color:var(--muted);font-size:13px;margin-top:8px;
+    transition:color .2s;display:inline-block;
+  }
+  .list-item-remove:hover{color:#FF4500}
+  .list-item-actions{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+  .list-item-icon-btn{
+    width:36px;height:36px;border-radius:50%;
+    background:var(--bg-alt);
+    display:flex;align-items:center;justify-content:center;
+    transition:all .2s;font-size:14px;
+  }
+  .list-item-icon-btn:hover{background:var(--ink);color:var(--accent)}
 
   /* ===== TOAST ===== */
   .toast{
@@ -567,6 +699,7 @@
     opacity:0;transition:all .3s;
     z-index:300;
     display:flex;align-items:center;gap:10px;
+    white-space:nowrap;
   }
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   .toast .ico{color:var(--accent)}
@@ -601,6 +734,7 @@
     .cta-box{padding:60px 24px;border-radius:24px}
     .subscribe{flex-direction:column;border-radius:24px;padding:10px}
     .subscribe input{padding:14px}
+    .icon-btn{width:40px;height:40px}
   }
 </style>
 </head>
@@ -619,15 +753,16 @@
         <li><a href="#contacts">Контакты</a></li>
       </ul>
       <div class="nav-actions">
-        <button class="icon-btn" aria-label="Поиск">
+        <button class="icon-btn" id="searchBtn" aria-label="Поиск">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
         </button>
-        <button class="icon-btn" aria-label="Избранное">
+        <button class="icon-btn" id="favBtn" aria-label="Избранное">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/></svg>
+          <span class="icon-count" id="favCount">0</span>
         </button>
         <button class="icon-btn" id="cartBtn" aria-label="Корзина">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-          <span class="cart-count" id="cartCount">0</span>
+          <span class="icon-count" id="cartCount">0</span>
         </button>
       </div>
     </nav>
@@ -822,21 +957,65 @@
   </div>
 </footer>
 
-<!-- CART -->
-<div class="cart-overlay" id="cartOverlay"></div>
-<aside class="cart-drawer" id="cartDrawer">
-  <div class="cart-head">
-    <h3>Корзина</h3>
-    <button class="cart-close" id="cartClose">✕</button>
+<!-- OVERLAY -->
+<div class="overlay" id="overlay"></div>
+
+<!-- SEARCH DRAWER -->
+<aside class="drawer" id="searchDrawer">
+  <div class="drawer-head">
+    <h3>Поиск</h3>
+    <button class="drawer-close" data-close>✕</button>
   </div>
-  <div class="cart-items" id="cartItems"></div>
-  <div class="cart-foot" id="cartFoot" style="display:none">
-    <div class="cart-total">
+  <div class="drawer-body">
+    <div class="search-input-wrap">
+      <svg class="search-input-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" class="search-input" id="searchInput" placeholder="Найти кроссовки..." autocomplete="off">
+      <button class="search-clear" id="searchClear" aria-label="Очистить">✕</button>
+    </div>
+    <div id="searchContent">
+      <div class="search-popular">
+        <h4>Популярные запросы</h4>
+        <div class="popular-tags" id="popularTags">
+          <button class="popular-tag" data-q="Air Force">Air Force</button>
+          <button class="popular-tag" data-q="Jordan">Jordan</button>
+          <button class="popular-tag" data-q="Yeezy">Yeezy</button>
+          <button class="popular-tag" data-q="Dunk">Dunk</button>
+          <button class="popular-tag" data-q="New Balance 550">NB 550</button>
+          <button class="popular-tag" data-q="Samba">Samba</button>
+          <button class="popular-tag" data-q="Gel">Gel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- FAVORITES DRAWER -->
+<aside class="drawer" id="favDrawer">
+  <div class="drawer-head">
+    <h3>Избранное</h3>
+    <button class="drawer-close" data-close>✕</button>
+  </div>
+  <div class="drawer-body" id="favItems"></div>
+  <div class="drawer-foot" id="favFoot" style="display:none">
+    <button class="drawer-action" onclick="closeAllDrawers();document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">Перейти в каталог</button>
+    <button class="drawer-clear" id="favClear">Очистить избранное</button>
+  </div>
+</aside>
+
+<!-- CART DRAWER -->
+<aside class="drawer" id="cartDrawer">
+  <div class="drawer-head">
+    <h3>Корзина</h3>
+    <button class="drawer-close" data-close>✕</button>
+  </div>
+  <div class="drawer-body" id="cartItems"></div>
+  <div class="drawer-foot" id="cartFoot" style="display:none">
+    <div class="drawer-total">
       <span>Итого</span>
       <span id="cartTotal">0 ₽</span>
     </div>
-    <button class="cart-checkout" onclick="showToast('Заказ оформлен! Мы свяжемся с вами ✓')">Оформить заказ</button>
-    <button class="cart-clear" id="cartClear">Очистить корзину</button>
+    <button class="drawer-action" onclick="showToast('Заказ оформлен! Мы свяжемся с вами ✓')">Оформить заказ</button>
+    <button class="drawer-clear" id="cartClear">Очистить корзину</button>
   </div>
 </aside>
 
@@ -871,7 +1050,44 @@
   // === STATE ===
   let currentFilter = 'all';
   let currentSort = 'default';
-  let cart = [];
+  let cart = JSON.parse(localStorage.getItem('sz_cart')||'[]');
+  let favorites = JSON.parse(localStorage.getItem('sz_favs')||'[]');
+
+  // === DRAWER HELPERS ===
+  const overlay = document.getElementById('overlay');
+  const drawers = {
+    search: document.getElementById('searchDrawer'),
+    fav: document.getElementById('favDrawer'),
+    cart: document.getElementById('cartDrawer'),
+  };
+  let activeDrawer = null;
+
+  function openDrawer(name){
+    closeAllDrawers();
+    drawers[name].classList.add('open');
+    overlay.classList.add('open');
+    activeDrawer = name;
+    document.body.style.overflow = 'hidden';
+    if(name==='search'){
+      setTimeout(()=>document.getElementById('searchInput').focus(),300);
+    }
+  }
+  function closeAllDrawers(){
+    Object.values(drawers).forEach(d=>d.classList.remove('open'));
+    overlay.classList.remove('open');
+    activeDrawer = null;
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('searchBtn').addEventListener('click',()=>openDrawer('search'));
+  document.getElementById('favBtn').addEventListener('click',()=>{renderFavorites();openDrawer('fav')});
+  document.getElementById('cartBtn').addEventListener('click',()=>{renderCart();openDrawer('cart')});
+  overlay.addEventListener('click',closeAllDrawers);
+  document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',closeAllDrawers));
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape') closeAllDrawers();
+    if((e.ctrlKey||e.metaKey) && e.key==='k'){e.preventDefault();openDrawer('search')}
+  });
 
   // === RENDER PRODUCTS ===
   const grid = document.getElementById('productsGrid');
@@ -881,11 +1097,13 @@
     else if(currentSort==='price-desc') list.sort((a,b)=>b.price-a.price);
     else if(currentSort==='rating') list.sort((a,b)=>b.rating-a.rating);
 
-    grid.innerHTML = list.map(p=>`
+    grid.innerHTML = list.map(p=>{
+      const isFav = favorites.includes(p.id);
+      return `
       <article class="product reveal visible" data-id="${p.id}">
         <div class="product-img">
           ${p.tag?`<span class="product-tag ${p.tag}">${p.tag==='new'?'New':'Hot'}</span>`:''}
-          <button class="product-fav" aria-label="В избранное">♡</button>
+          <button class="product-fav ${isFav?'active':''}" onclick="toggleFav(${p.id},this,event)" aria-label="В избранное">${isFav?'♥':'♡'}</button>
           <span class="shoe">${p.emoji}</span>
         </div>
         <div class="product-info">
@@ -906,7 +1124,7 @@
           </div>
         </div>
       </article>
-    `).join('');
+    `}).join('');
   }
 
   // === FILTERS ===
@@ -922,58 +1140,232 @@
     renderProducts();
   });
 
+  // === FAVORITES ===
+  const favCount = document.getElementById('favCount');
+  function updateFavCount(animate=true){
+    favCount.textContent = favorites.length;
+    if(favorites.length>0){
+      favCount.classList.add('show');
+      if(animate){
+        favCount.classList.remove('bump');
+        void favCount.offsetWidth;
+        favCount.classList.add('bump');
+      }
+    } else {
+      favCount.classList.remove('show');
+    }
+  }
+  function saveFavs(){localStorage.setItem('sz_favs',JSON.stringify(favorites))}
+  function toggleFav(id,btnEl,ev){
+    if(ev) ev.stopPropagation();
+    const idx = favorites.indexOf(id);
+    const product = products.find(p=>p.id===id);
+    if(idx>-1){
+      favorites.splice(idx,1);
+      if(btnEl){
+        btnEl.classList.remove('active');
+        btnEl.textContent = '♡';
+      }
+      showToast(`Удалено из избранного`);
+    } else {
+      favorites.push(id);
+      if(btnEl){
+        btnEl.classList.add('active','pop');
+        btnEl.textContent = '♥';
+        setTimeout(()=>btnEl.classList.remove('pop'),400);
+      }
+      showToast(`${product.name} в избранном ♥`);
+    }
+    saveFavs();
+    updateFavCount();
+  }
+  function renderFavorites(){
+    const container = document.getElementById('favItems');
+    const foot = document.getElementById('favFoot');
+    if(!favorites.length){
+      container.innerHTML = `<div class="drawer-empty"><div class="ico">♡</div><div>В избранном пока пусто</div><div style="font-size:13px;margin-top:8px">Нажмите ♡ на карточке товара</div></div>`;
+      foot.style.display = 'none';
+      return;
+    }
+    foot.style.display = 'block';
+    container.innerHTML = favorites.map(id=>{
+      const p = products.find(x=>x.id===id);
+      if(!p) return '';
+      return `
+        <div class="list-item">
+          <div class="list-item-img">${p.emoji}</div>
+          <div class="list-item-info">
+            <div class="list-item-brand">${p.brand}</div>
+            <div class="list-item-name">${p.name}</div>
+            <div class="list-item-price">${p.price.toLocaleString('ru-RU')} ₽</div>
+            <button class="list-item-remove" onclick="removeFav(${p.id})">Удалить</button>
+          </div>
+          <div class="list-item-actions">
+            <button class="list-item-icon-btn" onclick="addToCart(${p.id})" title="В корзину">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+  function removeFav(id){
+    favorites = favorites.filter(x=>x!==id);
+    saveFavs();
+    updateFavCount(false);
+    renderFavorites();
+    renderProducts();
+    showToast('Удалено из избранного');
+  }
+  document.getElementById('favClear').addEventListener('click',()=>{
+    favorites = [];
+    saveFavs();
+    updateFavCount(false);
+    renderFavorites();
+    renderProducts();
+  });
+
   // === CART ===
-  const cartBtn = document.getElementById('cartBtn');
-  const cartDrawer = document.getElementById('cartDrawer');
-  const cartOverlay = document.getElementById('cartOverlay');
-  const cartClose = document.getElementById('cartClose');
-  const cartItems = document.getElementById('cartItems');
   const cartCount = document.getElementById('cartCount');
+  const cartItems = document.getElementById('cartItems');
   const cartTotal = document.getElementById('cartTotal');
   const cartFoot = document.getElementById('cartFoot');
   const cartClear = document.getElementById('cartClear');
 
-  function openCart(){cartDrawer.classList.add('open');cartOverlay.classList.add('open')}
-  function closeCart(){cartDrawer.classList.remove('open');cartOverlay.classList.remove('open')}
-  cartBtn.addEventListener('click',openCart);
-  cartClose.addEventListener('click',closeCart);
-  cartOverlay.addEventListener('click',closeCart);
-
+  function saveCart(){localStorage.setItem('sz_cart',JSON.stringify(cart))}
   function addToCart(id){
     const product = products.find(p=>p.id===id);
     const existing = cart.find(i=>i.id===id);
     if(existing) existing.qty++;
     else cart.push({...product,qty:1});
+    saveCart();
     updateCart();
     showToast(`${product.name} добавлен в корзину`);
   }
   function removeFromCart(id){
     cart = cart.filter(i=>i.id!==id);
+    saveCart();
     updateCart();
   }
   function updateCart(){
     const count = cart.reduce((s,i)=>s+i.qty,0);
     const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
     cartCount.textContent = count;
+    if(count>0){
+      cartCount.classList.add('show');
+      cartCount.classList.remove('bump');
+      void cartCount.offsetWidth;
+      cartCount.classList.add('bump');
+    } else {
+      cartCount.classList.remove('show');
+    }
     cartTotal.textContent = total.toLocaleString('ru-RU')+' ₽';
     cartFoot.style.display = cart.length?'block':'none';
     if(!cart.length){
-      cartItems.innerHTML = `<div class="cart-empty"><div class="ico">🛒</div><div>Корзина пуста</div></div>`;
+      cartItems.innerHTML = `<div class="drawer-empty"><div class="ico">🛒</div><div>Корзина пуста</div><div style="font-size:13px;margin-top:8px">Добавьте товары из каталога</div></div>`;
     } else {
       cartItems.innerHTML = cart.map(i=>`
-        <div class="cart-item">
-          <div class="cart-item-img">${i.emoji}</div>
-          <div class="cart-item-info">
-            <div class="cart-item-brand">${i.brand}</div>
-            <div class="cart-item-name">${i.name}</div>
-            <div class="cart-item-price">${(i.price*i.qty).toLocaleString('ru-RU')} ₽ · ${i.qty} шт.</div>
-            <button class="cart-item-remove" onclick="removeFromCart(${i.id})">Удалить</button>
+        <div class="list-item">
+          <div class="list-item-img">${i.emoji}</div>
+          <div class="list-item-info">
+            <div class="list-item-brand">${i.brand}</div>
+            <div class="list-item-name">${i.name}</div>
+            <div class="list-item-price">${(i.price*i.qty).toLocaleString('ru-RU')} ₽</div>
+            <div class="list-item-qty">${i.qty} шт. × ${i.price.toLocaleString('ru-RU')} ₽</div>
+            <button class="list-item-remove" onclick="removeFromCart(${i.id})">Удалить</button>
           </div>
         </div>
       `).join('');
     }
   }
-  cartClear.addEventListener('click',()=>{cart=[];updateCart()});
+  cartClear.addEventListener('click',()=>{cart=[];saveCart();updateCart()});
+
+  // === SEARCH ===
+  const searchInput = document.getElementById('searchInput');
+  const searchClear = document.getElementById('searchClear');
+  const searchContent = document.getElementById('searchContent');
+
+  function renderSearchResults(query){
+    const q = query.trim().toLowerCase();
+    if(!q){
+      searchContent.innerHTML = `
+        <div class="search-popular">
+          <h4>Популярные запросы</h4>
+          <div class="popular-tags" id="popularTags">
+            <button class="popular-tag" data-q="Air Force">Air Force</button>
+            <button class="popular-tag" data-q="Jordan">Jordan</button>
+            <button class="popular-tag" data-q="Yeezy">Yeezy</button>
+            <button class="popular-tag" data-q="Dunk">Dunk</button>
+            <button class="popular-tag" data-q="New Balance 550">NB 550</button>
+            <button class="popular-tag" data-q="Samba">Samba</button>
+            <button class="popular-tag" data-q="Gel">Gel</button>
+          </div>
+        </div>
+      `;
+      bindPopularTags();
+      return;
+    }
+    const results = products.filter(p=>
+      p.name.toLowerCase().includes(q) ||
+      p.brand.toLowerCase().includes(q)
+    );
+    if(!results.length){
+      searchContent.innerHTML = `<div class="drawer-empty"><div class="ico">🔍</div><div>Ничего не найдено</div><div style="font-size:13px;margin-top:8px">Попробуйте другой запрос</div></div>`;
+      return;
+    }
+    searchContent.innerHTML = `
+      <div class="search-hint">Найдено: <strong>${results.length}</strong></div>
+      <div class="search-results">
+        ${results.map(p=>`
+          <div class="search-item" onclick="goToProduct(${p.id})">
+            <div class="search-item-img">${p.emoji}</div>
+            <div class="search-item-info">
+              <div class="search-item-brand">${p.brand}</div>
+              <div class="search-item-name">${p.name}</div>
+              <div class="search-item-price">${p.price.toLocaleString('ru-RU')} ₽</div>
+            </div>
+            <button class="search-item-add" onclick="event.stopPropagation();addToCart(${p.id})" title="В корзину">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+  function bindPopularTags(){
+    document.querySelectorAll('.popular-tag').forEach(t=>{
+      t.addEventListener('click',()=>{
+        searchInput.value = t.dataset.q;
+        searchClear.classList.add('show');
+        renderSearchResults(t.dataset.q);
+      });
+    });
+  }
+  function goToProduct(id){
+    closeAllDrawers();
+    setTimeout(()=>{
+      const el = document.querySelector(`.product[data-id="${id}"]`);
+      if(el){
+        el.scrollIntoView({behavior:'smooth',block:'center'});
+        el.style.outline = '3px solid var(--accent)';
+        el.style.outlineOffset = '4px';
+        setTimeout(()=>{el.style.outline='';el.style.outlineOffset=''},1500);
+      }
+    },300);
+  }
+
+  searchInput.addEventListener('input',e=>{
+    const v = e.target.value;
+    searchClear.classList.toggle('show',v.length>0);
+    renderSearchResults(v);
+  });
+  searchClear.addEventListener('click',()=>{
+    searchInput.value = '';
+    searchClear.classList.remove('show');
+    renderSearchResults('');
+    searchInput.focus();
+  });
+  bindPopularTags();
 
   // === TOAST ===
   const toast = document.getElementById('toast');
@@ -997,6 +1389,7 @@
   // === INIT ===
   renderProducts();
   updateCart();
+  updateFavCount(false);
 </script>
 </body>
 </html>
